@@ -59,8 +59,6 @@ public class BombSquare extends GameSquare
         All squares should have a value regarding the no. of mines adjacent to them.
         */
 
-        this.setCount();
-
         if(this.hasBomb)
         {
             this.setImage("images/bomb.png");
@@ -68,10 +66,6 @@ public class BombSquare extends GameSquare
         else
         {
             this.clearSquare();
-            /*if(this.count == 0)
-            {
-
-            }*/
         }
     }
 
@@ -91,9 +85,11 @@ public class BombSquare extends GameSquare
 
     public void clearSquare()
     {
+        this.setCount();
+
         if(this.count == 0)
         {
-            /*this.setImage("images/0.png");
+            this.setImage("images/0.png");
             for(int i = -1; i < 2; i++)
             {
                 for(int j = -1; j < 2; j++)
@@ -106,10 +102,9 @@ public class BombSquare extends GameSquare
                     {
                         temp = (BombSquare) board.getSquareAt(this.getXLocation() + i, this.getYLocation() + j);
                         temp.clearSquare();
-
                     }
                 }
-            }*/
+            }
         }
         else
         {
