@@ -87,8 +87,8 @@ public class BombSquare extends GameSquare
         {
             for(int j = -1; j < 2; j++)
             {
-                if(!(i == 0 && j == 0))
-                {
+                /*if(!(i == 0 && j == 0))
+                {*/
                     if(this.getXLocation() + i < 0 || this.getXLocation() + i > 29 || this.getYLocation() + j < 0 || this.getYLocation() + j > 29)
                     {
                         //do nothing, as this square does not exist
@@ -142,7 +142,7 @@ public class BombSquare extends GameSquare
                             }
                         }
                     }
-                }
+                //}*/
                 
             }
         
