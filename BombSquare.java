@@ -1,7 +1,8 @@
 public class BombSquare extends GameSquare
 {
     private GameBoard board;                            // Object reference to the GameBoard this square is part of.
-    private boolean hasBomb, rightClickFlag, beenSet, beenCleared;                            // True if this squre contains a bomb. False otherwise.
+    private boolean hasBomb, rightClickFlag, beenCleared;                            // True if this squre contains a bomb. False otherwise.
+    private static boolean gameOver;
     private int count = 0;
     private BombSquare temp;
 
@@ -13,10 +14,37 @@ public class BombSquare extends GameSquare
 
         this.board = board;
         this.hasBomb = (((int) (Math.random() * MINE_PROBABILITY)) == 0);
-        this.beenSet = false;
         this.beenCleared = false;
     }
     
+    public void leftClicked()
+    {
+        if(this.hasBomb && !gameOver)
+        {
+            this.setImage("images/bomb.png");
+            this.beenCleared = true;
+            gameOver = true;
+        }
+        else if(!this.hasBomb && !this.beenCleared && !this.rightClickFlag && !gameOver)
+        {
+            this.clearSquare();
+        }
+    }
+
+    public void rightClicked()
+    {
+        if(rightClickFlag && !gameOver)
+        {
+            this.setImage("images/blank.png");
+            rightClickFlag = false;
+        }
+        else if(!rightClickFlag && !this.beenCleared && !gameOver)
+        {
+            this.setImage("images/flag.png");
+            rightClickFlag = true;
+        }
+    }
+
     public void setCount()
     {
         for(int i = -1; i < 2; i++)
@@ -37,37 +65,6 @@ public class BombSquare extends GameSquare
                     }
                 }
             }
-        }
-    }
-    
-    public void leftClicked()
-    {
-        if(this.hasBomb)
-        {
-            this.setImage("images/bomb.png");
-            this.beenCleared = true;
-        }
-        else if(!this.hasBomb && !this.beenCleared && !this.rightClickFlag)
-        {
-            this.clearSquare();
-        }
-    }
-
-    public void rightClicked()
-    {
-        if(rightClickFlag)
-        {
-            this.setImage("images/blank.png");
-            rightClickFlag = false;
-        }
-        else
-        {
-            if(!this.beenCleared)
-            {
-                this.setImage("images/flag.png");
-                rightClickFlag = true;
-            }
-            
         }
     }
 
