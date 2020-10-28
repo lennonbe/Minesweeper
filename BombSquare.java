@@ -3,7 +3,6 @@ public class BombSquare extends GameSquare
     private GameBoard board;                            // Object reference to the GameBoard this square is part of.
     private boolean hasBomb, rightClickFlag, beenSet, beenCleared;                            // True if this squre contains a bomb. False otherwise.
     private int count = 0;
-    private int arrSize = 0;
     private BombSquare temp, surroundingBombsquare;
     //private BombSquare [] surroundingSquares;
     //private int surrCount = 0;
@@ -18,15 +17,10 @@ public class BombSquare extends GameSquare
         this.hasBomb = (((int) (Math.random() * MINE_PROBABILITY)) == 0);
         this.beenSet = false;
         this.beenCleared = false;
-
-        //surroundingSquares = new BombSquare[8];
-
-        //this.setCount();
     }
     
     public void setCount()
     {
-        
         for(int i = -1; i < 2; i++)
         {
             for(int j = -1; j < 2; j++)
@@ -38,8 +32,8 @@ public class BombSquare extends GameSquare
                 else
                 {
                     
-                    temp = (BombSquare) board.getSquareAt(this.getXLocation() + i, this.getYLocation() + j);
-                    if(temp.hasBomb)
+                    surroundingBombsquare = (BombSquare) board.getSquareAt(this.getXLocation() + i, this.getYLocation() + j);
+                    if(surroundingBombsquare.hasBomb)
                     {
                         this.count++;
                     }
@@ -50,16 +44,12 @@ public class BombSquare extends GameSquare
     
     public void leftClicked()
     {
-        /*
-        Sweeps for mines using recursion.
-        All squares should have a value regarding the no. of mines adjacent to them.
-        */
-
         if(this.hasBomb)
         {
             this.setImage("images/bomb.png");
+            this.beenCleared = true;
         }
-        else
+        else if(!this.hasBomb && !this.beenCleared && !this.rightClickFlag)
         {
             this.clearSquare();
         }
@@ -74,8 +64,12 @@ public class BombSquare extends GameSquare
         }
         else
         {
-            this.setImage("images/flag.png");
-            rightClickFlag = true;
+            if(!this.beenCleared)
+            {
+                this.setImage("images/flag.png");
+                rightClickFlag = true;
+            }
+            
         }
     }
 
@@ -87,117 +81,32 @@ public class BombSquare extends GameSquare
         {
             for(int j = -1; j < 2; j++)
             {
-                /*if(!(i == 0 && j == 0))
-                {*/
-                    if(this.getXLocation() + i < 0 || this.getXLocation() + i > 29 || this.getYLocation() + j < 0 || this.getYLocation() + j > 29)
+                
+                if(this.getXLocation() + i < 0 || this.getXLocation() + i > 29 || this.getYLocation() + j < 0 || this.getYLocation() + j > 29)
+                {
+                    //do nothing, as this square does not exist
+                }
+                else
+                {
+                    surroundingBombsquare = (BombSquare) this.board.getSquareAt(this.getXLocation() + i, this.getYLocation() + j);
+
+                    if(!surroundingBombsquare.beenCleared && !this.surroundingBombsquare.hasBomb)
                     {
-                        //do nothing, as this square does not exist
-                    }
-                    else
-                    {
-                        surroundingBombsquare = (BombSquare) this.board.getSquareAt(this.getXLocation() + i, this.getYLocation() + j);
-                        if(!surroundingBombsquare.beenCleared && !this.surroundingBombsquare.hasBomb)
+                        this.beenCleared = true;
+                        
+                        if(this.count == 0)
                         {
-                            this.beenCleared = true;
-                            
-                            if(this.count == 0)
-                            {
-                                this.setImage("images/0.png");
-                                surroundingBombsquare.clearSquare();
-                            }
-                            else
-                            {
-                                if(this.count == 1)
-                                {
-                                    this.setImage("images/1.png");
-                                }
-                                else if(this.count == 2)
-                                {
-                                    this.setImage("images/2.png");
-                                }
-                                else if(this.count == 3)
-                                {
-                                    this.setImage("images/3.png");
-                                }
-                                else if(this.count == 4)
-                                {
-                                    this.setImage("images/4.png");
-                                }
-                                else if(this.count == 5)
-                                {
-                                    this.setImage("images/5.png");
-                                }
-                                else if(this.count == 6)
-                                {
-                                    this.setImage("images/6.png");
-                                }
-                                else if(this.count == 7)
-                                {
-                                    this.setImage("images/7.png");
-                                }
-                                else if(this.count == 8)
-                                {
-                                    this.setImage("images/8.png");
-                                }
-                            }
+                            surroundingBombsquare.clearSquare();
                         }
+
+                        this.setImage("images/" + String.valueOf(this.count) + ".png");
+                        
                     }
-                //}*/
+                }
                 
             }
         
         }
     }
 
-    /*public int getNumSurroundingElements()
-    {
-        arrSize = 0;
-
-        for(int i = -1; i < 2; i++)
-        {
-            for(int j = -1; j < 2; j++)
-            {
-                if(!(i == 0 && j == 0))
-                {
-                    if(this.getXLocation() + i < 0 || this.getXLocation() + i > 29 || this.getYLocation() + j < 0 || this.getYLocation() + j > 29)
-                    {
-                        //do nothing, as this square does not exist
-                    }
-                    else
-                    {
-                        arrSize++;
-                    }
-                }
-            }
-        }
-        System.out.println(arrSize);
-
-        return arrSize;
-    }
-
-    public void populateSurroundingElementsArr()
-    {
-        this.surrCount = 0;
-
-        for(int i = -1; i < 2; i++)
-        {
-            for(int j = -1; j < 2; j++)
-            {
-                if(!(i == 0 && j == 0))
-                {
-                    if(this.getXLocation() + i < 0 || this.getXLocation() + i > 29 || this.getYLocation() + j < 0 || this.getYLocation() + j > 29)
-                    {
-                        //do nothing, as this square does not exist
-                    }
-                    else
-                    {
-                        this.surroundingSquares[surrCount] = (BombSquare)board.getSquareAt(this.getXLocation() + i, this.getYLocation() + j);
-                        surrCount++;
-                        System.out.println("Filled up with " + surrCount);
-                    }
-                }
-                
-            }
-        }
-    }*/
 }
