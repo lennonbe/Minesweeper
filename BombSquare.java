@@ -3,9 +3,7 @@ public class BombSquare extends GameSquare
     private GameBoard board;                            // Object reference to the GameBoard this square is part of.
     private boolean hasBomb, rightClickFlag, beenSet, beenCleared;                            // True if this squre contains a bomb. False otherwise.
     private int count = 0;
-    private BombSquare temp, surroundingBombsquare;
-    //private BombSquare [] surroundingSquares;
-    //private int surrCount = 0;
+    private BombSquare temp;
 
 	public static final int MINE_PROBABILITY = 10;
 
@@ -32,8 +30,8 @@ public class BombSquare extends GameSquare
                 else
                 {
                     
-                    surroundingBombsquare = (BombSquare) board.getSquareAt(this.getXLocation() + i, this.getYLocation() + j);
-                    if(surroundingBombsquare.hasBomb)
+                    temp = (BombSquare) board.getSquareAt(this.getXLocation() + i, this.getYLocation() + j);
+                    if(temp.hasBomb)
                     {
                         this.count++;
                     }
@@ -88,15 +86,15 @@ public class BombSquare extends GameSquare
                 }
                 else
                 {
-                    surroundingBombsquare = (BombSquare) this.board.getSquareAt(this.getXLocation() + i, this.getYLocation() + j);
+                    temp = (BombSquare) this.board.getSquareAt(this.getXLocation() + i, this.getYLocation() + j);
 
-                    if(!surroundingBombsquare.beenCleared && !this.surroundingBombsquare.hasBomb)
+                    if(!temp.beenCleared && !this.temp.hasBomb)
                     {
                         this.beenCleared = true;
                         
                         if(this.count == 0)
                         {
-                            surroundingBombsquare.clearSquare();
+                            temp.clearSquare();
                         }
 
                         this.setImage("images/" + String.valueOf(this.count) + ".png");
