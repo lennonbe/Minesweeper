@@ -23,6 +23,7 @@ public class BombSquare extends GameSquare
 	public BombSquare(int x, int y, GameBoard board)
 	{
 		super(x, y, "images/blank.png");
+        
 
         this.board = board;
         this.hasBomb = (((int) (Math.random() * MINE_PROBABILITY)) == 0);
